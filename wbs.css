@@ -183,7 +183,23 @@ body
     text-align: center;
 }
 
-.blue
+.toggler
 {
-    background-color: blue;
+    color: #808080;
+}
+
+.toggler:hover
+{
+    color: blue;
+    cursor: pointer;
+}
+
+.ramification
+{
+    display: block;
+}
+
+.hidden
+{
+    display: none;
 }

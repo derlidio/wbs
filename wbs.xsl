@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- The MIT License:
+
+Copyright 2021 - Derlidio Siqueira - Expoente Zero
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template match="/">
@@ -12,6 +33,7 @@
           <meta http-equiv="CACHE-CONTROL" content="NO-CACHE"/>
           <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/>
           <link rel="stylesheet" href="wbs.css"/>
+          <script src="wbs.js"/>
       </head>
       <body>
         <h1><xsl:value-of select="project/name"/></h1>
@@ -19,6 +41,7 @@
           <xsl:apply-templates select="project/task"/>
         </div>
       </body>
+      <script>add_behavior();</script>
     </html>
   </xsl:template>
 
@@ -92,9 +115,9 @@
     <!-- Let's start to process the branches -->
     <!-- =================================== -->
 
-    <div class="branch">
+    <div class="branch" id="branch:{$task_index}">
 
-      <div class="task">
+      <div class="task" id="task:{$task_index}">
 
         <!-- =========================================== -->
         <!-- Draw the connectors above the task box/card -->
@@ -161,7 +184,7 @@
                 <!-- ===================================================  -->
 
                 <xsl:if test="task">
-                  <span class="material-icons-outlined task_icon">account_tree</span>
+                  <span class="material-icons-outlined task_icon toggler" id="toggler:{$task_index}">account_tree</span>
                 </xsl:if>
 
                 <!-- ============================================== -->
@@ -232,11 +255,13 @@
 
       </div>
 
-      <!-- =============================================================== -->
-      <!-- Call the template recursively until the last task of the branch -->
-      <!-- =============================================================== -->
+      <!-- ====================================================== -->
+      <!-- Apply the template for this task ramification (if any) -->
+      <!-- ====================================================== -->
 
-      <xsl:apply-templates select="./task"/>
+      <div class="ramification" id="ramification:{$task_index}">
+        <xsl:apply-templates select="./task"/>
+      </div>
 
     </div>
 
