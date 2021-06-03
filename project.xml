@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="wbs.xsl"?>
+
+<project>
+    <name>WBS Tree</name>
+    <task>
+        <title>A</title>
+        <resource>Derlidio</resource>
+        <percent>0</percent>
+        <weight>10</weight>
+        <task>
+            <title>AA</title>
+            <resource>Derlidio</resource>
+            <weight>5</weight>
+            <percent>100</percent>
+        </task>
+        <task>
+            <title>AB</title>
+            <resource>Derlidio</resource>
+            <weight>1</weight>
+            <percent>10</percent>
+            <status>paused</status>
+        </task>
+        <task>
+            <title>AC</title>
+            <resource>Derlidio Claudenir Leite Siqueira</resource>
+            <percent>100</percent>
+        </task>
+    </task>
+
+    <task>
+        <title>A</title>
+        <resource>Derlidio</resource>
+        <percent>0</percent>
+        <task>
+            <title>AA</title>
+            <resource>Derlidio</resource>
+            <percent>0</percent>
+            <task>
+                <title>AAA</title>
+                <resource>Derlidio</resource>
+                <percent>0</percent>
+                <task>
+                    <title>AAAA</title>
+                    <resource>Derlidio</resource>
+                    <percent>100</percent>
+                </task>
+                <task>
+                    <title>AAAB</title>
+                    <resource>Derlidio</resource>
+                    <percent>10</percent>
+                    <status>paused</status>
+                </task>
+                <task>
+                    <title>AAAC</title>
+                    <resource>Derlidio</resource>
+                    <percent>10</percent>
+                    <status>canceled</status>
+                </task>
+            </task>
+            <task>
+                <title>AAB</title>
+                <resource>Derlidio</resource>
+                <percent>0</percent>
+                <status>canceled</status>
+            </task>
+        </task>
+        <task>
+            <title>AB sdas</title>
+            <resource>Derlidio</resource>
+            <percent>10</percent>
+        </task>
+    </task>
+
+    <task>
+        <title>Relearn CSS</title>
+        <resource>Derlidio</resource>
+        <percent>10</percent>
+        <task>
+            <title>Fight with CSS</title>
+            <resource>Derlidio</resource>
+            <percent>0</percent>
+            <task>
+                <title>A Sub CSS Task</title>
+                <resource>Derlidio</resource>
+                <percent>0</percent>
+                <task>
+                    <title>A Sub-Sub CSS Task</title>
+                    <resource>Derlidio</resource>
+                    <percent>20</percent>
+                </task>
+                <task>
+                    <title>A Sub-Sub CSS Task</title>
+                    <resource>Derlidio</resource>
+                    <percent>10</percent>
+                </task>
+            </task>
+            <task>
+                <title>Another Sub CSS Task</title>
+                <resource>Derlidio</resource>
+                <percent>0</percent>
+            </task>
+        </task>
+        <task>
+            <title>Fight a little more with CSS</title>
+            <resource>Derlidio</resource>
+            <percent>0</percent>
+        </task>
+    </task>
+
+</project>
