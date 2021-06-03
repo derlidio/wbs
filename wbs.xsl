@@ -24,74 +24,81 @@
 
   <xsl:template match="task">
 
-    <!-- ================================================================================================= -->
-    <!-- Computa a quantidade de "folhas" no ramo. Essas são as tarefas em que se trabalha (de verdade).   -->
-    <!-- Ao ajustar (manualmente) o percentual de execução dessas tarefas os demais nós do ramo terão seus -->
-    <!-- percentuais atualizados automaticamente (levando em conta o peso de cada tarefa).                 -->
-    <!-- ================================================================================================= -->
+     <!-- Compute the task's index based on it's position on the branch -->
 
-    <xsl:variable name="leaf" select="count(descendant::task[ count(task) = 0 ])"/>
+    <xsl:variable name="task_index">
+      <xsl:call-template name="index"/>
+    </xsl:variable>
 
     <!-- ================================================================================================== -->
-    <!-- Computa a quantidade de sub-tarefas em cada status (feita, a fazer, fazendo, pausada e cancelada). -->
+    <!-- Compute the number of "leaves" in this branch. Leaves are the tasks we actually work on, and wich  -->
+    <!-- have their "percent-complete" updated (by hand, or by software interface) in the XML file.         -->
+    <!-- If a task has sub-tasks, then it will be treated as a "node" in the "branch" (despite of the fact  -->
+    <!-- that, for scripting purposes, it's internal type will still be "task"). Such nodes will have their -->
+    <!-- percent-complete computed based on their leaves. Any number passed on the <percent> tag will be    -->
+    <!-- ignored.                                                                                           -->
     <!-- ================================================================================================== -->
+
+    <xsl:variable name="leaves" select="count(descendant::task[ count(task) = 0 ])"/>
+
+    <!-- ============================================================================= -->
+    <!-- Compute the number of tasks in each "status" (done, doing, paused, canceled). -->
+    <!-- The status flags wich can be present on the XML are: "paused" and "canceled". -->
+    <!-- The "pending", "doing", and "done" statuses are based on the task's percent   -->
+    <!-- complete.                                                                     -->
+    <!-- ============================================================================= -->
 
     <xsl:variable name="done" select="count(descendant::task[ (count(task) = 0) and (percent = 100) and ((status != 'canceled') or not(status)) ])"/>
     <xsl:variable name="doing" select="count(descendant::task[ (count(task) = 0) and (percent &gt; 0 and percent &lt; 100) and ((status != 'canceled') or not(status)) ])"/>
     <xsl:variable name="paused" select="count(descendant::task[ (count(task) = 0) and (percent &gt; 0 and percent &lt; 100) and (status = 'paused') ])"/>
     <xsl:variable name="canceled" select="count(descendant::task[ (count(task) = 0) and (status = 'canceled') ])"/>
 
-    <!-- ======================================= -->
-    <!-- Calcula os pesos das folhas deste ramo. -->
-    <!-- ======================================= -->
+    <!-- =================================================================================== -->
+    <!-- Not all tasks of a project will have the same difficult level, so the user may want -->
+    <!-- to apply "weights" to them. The <weight> tag must be used only on leaf tasks. It'll -->
+    <!-- be spreaded upwards the task's brach accordingly.                                   -->
+    <!-- =================================================================================== -->
 
     <xsl:variable name="weight_empty" select="count(descendant::task[ (count(task) = 0) and not(weight) and ((status != 'canceled') or not(status)) ])"/>
     <xsl:variable name="weight_given" select="sum(descendant::task/weight[ (count(task) = 0) and ((status != 'canceled') or not(status)) ])"/>
     <xsl:variable name="weight_total" select="$weight_empty + $weight_given"/>
 
-    <!-- ========================================================================= -->
-    <!-- Computa o percentual total executado das sub-tarefas (folhas) deste ramo. -->
-    <!-- ========================================================================= -->
+    <!-- =========================================================================== -->
+    <!-- Computes the percent-complete of this task. If it's a node, sum the percent -->
+    <!-- of it's leaves then takes the average (weighted percent).                   -->
+    <!-- =========================================================================== -->
 
-    <xsl:variable name="weighted_percent">
+    <xsl:variable name="percent_sum">
       <xsl:call-template name="sum_percents">
         <xsl:with-param name="list" select="descendant::task[ (count(task) = 0) and ((status != 'canceled') or not(status)) ]"/>
         <xsl:with-param name="accumulated" select="0"/>
       </xsl:call-template>
     </xsl:variable>
 
-    <!-- ======================================== -->
-    <!-- Computa a média ponderada do percentual. -->
-    <!-- ======================================== -->
-
-    <xsl:variable name="averaged_weight">
+    <xsl:variable name="percent_average">
         <xsl:choose>
-          <xsl:when test="$leaf != 0">
-            <!-- É um nó. Utiliza média ponderada. -->
-            <xsl:value-of select="format-number($weighted_percent div $weight_total, '##0.##')"/>
+          <xsl:when test="$leaves != 0">
+            <!-- It's a branch. Use the average. -->
+            <xsl:value-of select="format-number($percent_sum div $weight_total, '##0.##')"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- É uma folha. Utiliza o percentual informado. -->
+            <!-- It's a leaf. Use the given percent. -->
             <xsl:value-of select="format-number(percent, '##0.##')"/>
           </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
 
-    <!-- ========================================================================================= -->
-    <!-- Uma ramificação da WBS. Pode conter outras ramificações (outros elementos do mesmo tipo). -->
-    <!-- ========================================================================================= -->
+    <!-- =================================== -->
+    <!-- Let's start to process the branches -->
+    <!-- =================================== -->
 
     <div class="branch">
 
-      <!-- ============================ -->
-      <!-- Uma tarefa ou nó deste ramo. -->
-      <!-- ============================ -->
-
       <div class="task">
 
-        <!-- ================================================ -->
-        <!-- Conectores na parte de cima do "card" da tarefa. -->
-        <!-- ================================================ -->
+        <!-- =========================================== -->
+        <!-- Draw the connectors above the task box/card -->
+        <!-- =========================================== -->
 
         <xsl:choose>
           <xsl:when test="position() = 1"><div class="line_left"/></xsl:when>
@@ -103,66 +110,63 @@
             </xsl:otherwise>
         </xsl:choose>
 
-        <!-- ======================================== -->
-        <!-- O "card" com informações sobre a tarefa. -->
-        <!-- ======================================== -->
+        <!-- ====================== -->
+        <!-- The task info box/card -->
+        <!-- ====================== -->
 
         <div class="box">
 
           <div class="card">
             
-            <!-- ========================================== -->
-            <!-- O índice da tarefa (ex: 1, 1.1, 1.2, etc.) -->
-            <!-- ========================================== -->
+            <!-- ======================================== -->
+            <!-- The task index (i.e.: 1, 1.1, 1.2, etc.) -->
+            <!-- ======================================== -->
 
             <div> 
 
-              <!-- Os atributos do div são especificados conforme o status da tarefa -->
+              <!-- Set attributes according to the task status -->
 
               <xsl:attribute name="class">
                 index
                 <xsl:choose>
                   <xsl:when test="status='canceled'">canceled</xsl:when>
                   <xsl:when test="status='paused'">paused</xsl:when>
-                  <xsl:when test="$averaged_weight=100">completed</xsl:when>
+                  <xsl:when test="$percent_average=100">completed</xsl:when>
                   <xsl:otherwise>index</xsl:otherwise>
                 </xsl:choose>
               </xsl:attribute>
 
-              <!-- O índice é composto dinamicamente conforme a posição da tarefa na árvore -->
-
-              <xsl:call-template name="index"/>
+              <xsl:value-of select="$task_index"/>
 
             </div>
 
-            <!-- =================== -->
-            <!-- O título da tarefa. -->
-            <!-- =================== -->
+            <!-- ================ -->
+            <!-- The task's title -->
+            <!-- ================ -->
 
             <div class="task_title">
               <xsl:value-of select="title"/>
             </div>
 
-            <!-- =================================== -->
-            <!-- Ícones de status e nome do recurso. -->
-            <!-- =================================== -->
+            <!-- ================================== -->
+            <!-- Informative icons an resource name -->
+            <!-- ================================== -->
 
             <div class="task_status">
 
               <div class="task_icon">
 
-                <!-- ================================================================================= -->
-                <!-- Quando a tarefa possuir descendentes (sub-tarefas), exibe um ícone informativo.   -->
-                <!-- Este ícone também será utilizado no comportamento de "abrir/fechar" a ramificação -->
-                <!-- ================================================================================= -->
+                <!-- ==================================================== -->
+                <!-- If the task has descendants, give it a "branch" icon -->
+                <!-- ===================================================  -->
 
                 <xsl:if test="task">
                   <span class="material-icons-outlined task_icon">account_tree</span>
                 </xsl:if>
 
-                <!-- =================================================== -->
-                <!-- Se o peso for maior que 1, exibe um box informativo -->
-                <!-- =================================================== -->
+                <!-- ============================================== -->
+                <!-- If the task weight is greather than 1, show it -->
+                <!-- ============================================== -->
 
                 <xsl:if test="(weight &gt; 1) and not(task)">
                   <span class="task_weight">
@@ -170,57 +174,57 @@
                   </span>
                 </xsl:if>
 
-                <!-- =============================================================================== -->
-                <!-- Seleciona o ícone a exibir conforme o status e percentual de execução da tarefa -->
-                <!-- =============================================================================== -->
+                <!-- ========================================================================= -->
+                <!-- Select the task status icon based on the status flag and percent-complete -->
+                <!-- ========================================================================= -->
 
                 <span class="material-icons-outlined task_icon">
                   <xsl:choose>
-                    <xsl:when test="status='canceled'">cancel</xsl:when> <!-- A tarefa foi cancelada -->
-                    <xsl:when test="($leaf != 0) and ($canceled = $leaf)">cancel</xsl:when> <!-- Todas as tarefas do ramo foram canceladas -->
-                    <xsl:when test="($leaf != 0) and ($leaf - $canceled = $done)">check_circle</xsl:when> <!-- Todas as tarefas do ramo foram concluídas -->
-                    <xsl:when test="($leaf !=0 ) and ($doing = $paused)">pause_circle</xsl:when> <!-- Todas as tarefas em execução no ramo foram pausadas -->
-                    <xsl:when test="($leaf != 0) and ($doing != 0)">play_circle</xsl:when> <!-- Existem tarefas em execução nesse ramo -->
-                    <xsl:when test="percent = 100">check_circle</xsl:when> <!-- É uma tarefa (folha) concluída -->
-                    <xsl:when test="percent &gt; 0 and status='paused'">pause_circle</xsl:when> <!-- É uma tarefa (folha) pausada -->
-                    <xsl:when test="percent &gt; 0 and ($leaf = 0)">play_circle</xsl:when> <!-- É uma tarefa (folha) em execução -->
-                    <xsl:when test="$paused != 0 and $doing = $paused">pause_circle</xsl:when> <!-- Todas as tarefas em execução no ramo foram pausadas -->
-                    <xsl:when test="$doing != 0">play_circle</xsl:when> <!-- Há tarefas em execução no ramo -->
-                    <xsl:otherwise>pending</xsl:otherwise> <!-- Não há tarefas iniciadas no ramo -->
+                    <xsl:when test="status='canceled'">cancel</xsl:when> <!-- The task is canceled -->
+                    <xsl:when test="($leaves != 0) and ($canceled = $leaves)">cancel</xsl:when> <!-- All tasks on the branch have been canceled -->
+                    <xsl:when test="($leaves != 0) and ($leaves - $canceled = $done)">check_circle</xsl:when> <!-- All tasks on the branch are completed -->
+                    <xsl:when test="($leaves !=0 ) and ($doing = $paused)">pause_circle</xsl:when> <!-- All ongoing tasks have benn paused -->
+                    <xsl:when test="($leaves != 0) and ($doing != 0)">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
+                    <xsl:when test="percent = 100">check_circle</xsl:when> <!-- This is a completed leaf task -->
+                    <xsl:when test="percent &gt; 0 and status='paused'">pause_circle</xsl:when> <!-- This is a paused leaf task -->
+                    <xsl:when test="percent &gt; 0 and ($leaves = 0)">play_circle</xsl:when> <!-- This is an ongoing leaf task -->
+                    <xsl:when test="$paused != 0 and $doing = $paused">pause_circle</xsl:when> <!-- All tasks on the branch have been paused -->
+                    <xsl:when test="$doing != 0">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
+                    <xsl:otherwise>pending</xsl:otherwise> <!-- All tasks on the branch (or this task) are pending -->
                   </xsl:choose>
                 </span>
 
               </div>
 
-              <!-- ========================================== -->
-              <!-- Nome do recurso que vai executar a tarefa. -->
-              <!-- ========================================== -->
+              <!-- ============= -->
+              <!-- Resource name -->
+              <!-- ============= -->
 
               <span class="task_resource"><xsl:value-of select="resource"/></span>
 
             </div>
 
-            <!-- ========================================================= -->
-            <!-- Odômetro que marca o percentual executado da tarefa/ramo. -->
-            <!-- ========================================================= -->
+            <!-- ================================= -->
+            <!-- Odometer for the percent-complete -->
+            <!-- ================================= -->
 
             <div class="task_meter">
               <div class="percent_fill">
                 <xsl:attribute name="style">
-                  width:<xsl:value-of select="$averaged_weight"/>%;
+                  width:<xsl:value-of select="$percent_average"/>%;
                 </xsl:attribute>
                 <div/>
               </div>
-              <div class="percent"><xsl:value-of select="$averaged_weight"/>%</div>
+              <div class="percent"><xsl:value-of select="$percent_average"/>%</div>
             </div>
 
           </div>
 
         </div>
 
-        <!-- ======================================================================================== -->
-        <!-- Se a tarefa possuir sub-tarefas, cria uma linha (abaixo do card) conectando-a às filhas. -->
-        <!-- ======================================================================================== -->
+        <!-- ======================================================================================= -->
+        <!-- If the task has sub-tasks, then it must have a connector at the bottom of it's box/card -->
+        <!-- ======================================================================================= -->
         
         <xsl:if test="count(task) != 0">
           <div class="line_bottom"/>
@@ -228,19 +232,19 @@
 
       </div>
 
-      <!-- ============================================================ -->
-      <!-- Se houver sub-tarefas, aplica os templates (recursivamente). -->
-      <!-- ============================================================ -->
+      <!-- =============================================================== -->
+      <!-- Call the template recursively until the last task of the branch -->
+      <!-- =============================================================== -->
 
-      <xsl:apply-templates select="./task"/>      
+      <xsl:apply-templates select="./task"/>
 
     </div>
 
   </xsl:template>
 
-  <!-- ========================================================= -->
-  <!-- Template recursivo para cômputo do índice da tarefa ou nó -->
-  <!-- ========================================================= -->
+  <!-- ============================== -->
+  <!-- The index computation template -->
+  <!-- ============================== -->
 
   <xsl:template name="index">      
     <xsl:variable name="order"><xsl:number count="task"/></xsl:variable>      
@@ -250,24 +254,24 @@
     <xsl:value-of select="$order"/>
   </xsl:template>
 
-  <!-- ============================================================================== -->
-  <!-- Template recursivo para cômputo do percentual de conclusão de um nó em um ramo -->
-  <!-- ============================================================================== -->
+  <!-- ======================== -->
+  <!-- The percent-sum template -->
+  <!-- ======================== -->
 
   <xsl:template name="sum_percents">
     
     <xsl:param name="list"/>
     <xsl:param name="accumulated"/>
 
-    <!-- Só executa o processo se tivermos recebido uma lista de tasks no parâmetro "list" -->
+    <!-- Runs only if the "list" parameter has been passed -->
 
     <xsl:if test="$list">
             
-      <!-- Captura o primeiro item da lista -->
+      <!-- Captures the first list item -->
 
       <xsl:variable name="item" select="$list[position() = 1]"/>
 
-      <!-- Se um peso tiver sido especificado para o item, utiliza-o, caso contrário considera peso 1 -->
+      <!-- If the item has a <weight>, use it, otherwise assumes 1 -->
 
       <xsl:variable name="w">
         <xsl:choose>
@@ -276,7 +280,7 @@
         </xsl:choose>
       </xsl:variable>
 
-      <!-- Normaliza o percentual de execução da tarefa (deve estar entre 0 e 100, inclusive) -->
+      <!-- The percent-complete must be between 0 and 100, inclusive -->
 
       <xsl:variable name="p">
         <xsl:choose>
@@ -286,12 +290,11 @@
         </xsl:choose>
       </xsl:variable>
 
-      <!-- Calcula o percentual da tarefa (levando em conta o peso) -->
+      <!-- Computes the final task percent (weighted) -->
 
       <xsl:variable name="total" select="$accumulated + $p * $w"/>
 
-      <!-- Se a lista contiver apenas um elemento, então "printa" o valor acumulado (peso total) -->
-      <!-- caso contrário, chama novamente o template passando as próximas tarefas da lista.     -->
+      <!-- If we are at the last element of the list, then print the final value -->
 
       <xsl:choose>
         <xsl:when test="count($list) = 1">
