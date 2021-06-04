@@ -23,7 +23,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <!-- Default resource name for tasks where the tag <resource> is not specified -->
+
+  <xsl:variable name="default_resource"><xsl:value-of select="project/resource"/></xsl:variable>
+
+  <!-- Start processing the root tag (should be <project>) -->
+
   <xsl:template match="/">
+    
     <html>
       <head>
           <title>WBS</title>
@@ -36,7 +43,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <script src="wbs.js"/>
       </head>
       <body>
-        <h1><xsl:value-of select="project/name"/></h1>
+        <h1 id="project_name"><xsl:value-of select="project/name"/></h1>
         <div class="container">
           <xsl:apply-templates select="project/task"/>
         </div>
@@ -46,8 +53,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   </xsl:template>
 
   <xsl:template match="task">
-
-     <!-- Compute the task's index based on it's position on the branch -->
+    
+    <!-- Compute the task's index based on it's position on the branch -->
 
     <xsl:variable name="task_index">
       <xsl:call-template name="index"/>
@@ -237,7 +244,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               <!-- Resource name -->
               <!-- ============= -->
 
-              <span class="task_resource"><xsl:value-of select="resource"/></span>
+              <span class="task_resource">
+                <xsl:choose>
+                  <xsl:when test="resource"><xsl:value-of select="resource"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="$default_resource"/></xsl:otherwise>
+                </xsl:choose>
+              </span>
 
             </div>
 

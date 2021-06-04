@@ -7,22 +7,18 @@
     <resource>Derlidio</resource>
     <task>
         <title>Relearn XSL</title>
-        <resource>Derlidio</resource>
         <task>
             <title>Search Material</title>
-            <resource>Derlidio</resource>
             <percent>100</percent>
             <hours>1</hours>
         </task>
         <task>
             <title>Read Material</title>
-            <resource>Derlidio</resource>
             <percent>100</percent>
             <hours>1</hours>
         </task>
         <task>
             <title>Test Scripts</title>
-            <resource>Derlidio</resource>
             <percent>100</percent>
             <hours>4</hours>
         </task>
@@ -30,36 +26,29 @@
 
     <task>
         <title>WBS Layout</title>
-        <resource>Derlidio</resource>
         <task>
             <title>XSL Script</title>
-            <resource>Derlidio</resource>
             <task>
                 <title>Templates</title>
-                <resource>Derlidio</resource>
                 <task>
                     <title>General Template</title>
-                    <resource>Derlidio</resource>
                     <percent>100</percent>
                     <hours>4</hours>
                 </task>
                 <task>
                     <title>CSS Styles</title>
-                    <resource>Derlidio</resource>
                     <percent>100</percent>
                     <hours>2</hours>
                 </task>
             </task>
             <task>
                 <title>Tests &amp; Corrections</title>
-                <resource>Derlidio</resource>
                 <percent>100</percent>
                 <hours>4</hours>
             </task>
         </task>
         <task>
             <title>JS Behavior</title>
-            <resource>Derlidio</resource>
             <percent>100</percent>
             <hours>1</hours>
         </task>
@@ -67,24 +56,19 @@
 
     <task>
         <title>Showcase WBS Project</title>
-        <resource>Derlidio</resource>
         <task>
             <title>GitHub</title>
-            <resource>Derlidio</resource>
             <task>
                 <title>Private Repository</title>
-                <resource>Derlidio</resource>
                 <percent>100</percent>
             </task>
             <task>
                 <title>Public Repository</title>
-                <resource>Derlidio</resource>
                 <percent>0</percent>
             </task>
         </task>
         <task>
             <title>YouTube Video</title>
-            <resource>Derlidio</resource>
             <task>
                 <title>Roadmap Script</title>
                 <percent>0</percent>
