@@ -43,7 +43,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <script src="wbs.js"/>
       </head>
       <body>
-        <h1 id="project_name"><xsl:value-of select="project/name"/></h1>
+        <div class="project_name" id="project_name">
+          <h1><xsl:value-of select="project/name"/></h1>
+        </div>
         <div class="container">
           <xsl:apply-templates select="project/task"/>
         </div>

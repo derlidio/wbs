@@ -5,6 +5,13 @@ body
     font-family: Helvetica, arial, sans-serif;
 }
 
+.project_name
+{   
+    position: relative;
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+}
+
 .container
 {
     padding: 0.5em;
