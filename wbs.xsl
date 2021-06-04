@@ -106,10 +106,21 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           </xsl:when>
           <xsl:otherwise>
             <!-- It's a leaf. Use the given percent. -->
-            <xsl:value-of select="format-number(percent, '##0.##')"/>
+            <xsl:choose>
+              <xsl:when test="not(percent)">0</xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="format-number(percent, '##0.##')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
+
+    <!-- ========================================== -->
+    <!-- Compute the sum of hours on the leaf tasks -->
+    <!-- ========================================== -->
+
+    <xsl:variable name="hours_total" select="sum(descendant-or-self::task/hours[ (count(task) = 0) and ((status != 'canceled') or not(status)) ])"/>
 
     <!-- =================================== -->
     <!-- Let's start to process the branches -->
@@ -167,8 +178,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             <!-- The task's title -->
             <!-- ================ -->
 
-            <div class="task_title">
-              <xsl:value-of select="title"/>
+            <div class="title">
+              <xsl:if test="$hours_total &gt; 0">
+                <span class="task_hours"><xsl:value-of select="$hours_total"/>h</span>
+              </xsl:if>
+              <span class="task_title"><xsl:value-of select="title"/></span>
             </div>
 
             <!-- ================================== -->

@@ -105,13 +105,30 @@ body
     color: white;
 }
 
-.task_title
+.title
 {
     padding: 0.25em;
     font-size: 0.8em;
     background-color: #F5F5FF;
     border-left: 1px solid #C0C0C0;
     border-right: 1px solid #C0C0C0;
+    height: 1.40em;
+}
+
+.task_hours
+{
+    background-color: white;
+    border: 1px solid lightblue;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.task_title
+{
+    margin-left: 0.25em;
+    vertical-align: middle;
 }
 
 .task_status

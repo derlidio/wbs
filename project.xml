@@ -4,109 +4,104 @@
 
 <project>
     <name>WBS Tree</name>
+    <resource>Derlidio</resource>
     <task>
-        <title>A</title>
+        <title>Relearn XSL</title>
         <resource>Derlidio</resource>
-        <percent>0</percent>
-        <weight>10</weight>
         <task>
-            <title>AA</title>
+            <title>Search Material</title>
             <resource>Derlidio</resource>
-            <weight>5</weight>
             <percent>100</percent>
+            <hours>1</hours>
         </task>
         <task>
-            <title>AB</title>
+            <title>Read Material</title>
             <resource>Derlidio</resource>
-            <weight>1</weight>
-            <percent>10</percent>
-            <status>paused</status>
+            <percent>100</percent>
+            <hours>1</hours>
         </task>
         <task>
-            <title>AC</title>
-            <resource>Derlidio Claudenir Leite Siqueira</resource>
+            <title>Test Scripts</title>
+            <resource>Derlidio</resource>
             <percent>100</percent>
+            <hours>4</hours>
         </task>
     </task>
 
     <task>
-        <title>A</title>
+        <title>WBS Layout</title>
         <resource>Derlidio</resource>
-        <percent>0</percent>
         <task>
-            <title>AA</title>
+            <title>XSL Script</title>
             <resource>Derlidio</resource>
-            <percent>0</percent>
             <task>
-                <title>AAA</title>
+                <title>Templates</title>
                 <resource>Derlidio</resource>
-                <percent>0</percent>
                 <task>
-                    <title>AAAA</title>
+                    <title>General Template</title>
                     <resource>Derlidio</resource>
                     <percent>100</percent>
+                    <hours>4</hours>
                 </task>
                 <task>
-                    <title>AAAB</title>
+                    <title>CSS Styles</title>
                     <resource>Derlidio</resource>
-                    <percent>10</percent>
-                    <status>paused</status>
-                </task>
-                <task>
-                    <title>AAAC</title>
-                    <resource>Derlidio</resource>
-                    <percent>10</percent>
-                    <status>canceled</status>
+                    <percent>100</percent>
+                    <hours>2</hours>
                 </task>
             </task>
             <task>
-                <title>AAB</title>
+                <title>Tests &amp; Corrections</title>
                 <resource>Derlidio</resource>
-                <percent>0</percent>
-                <status>canceled</status>
+                <percent>100</percent>
+                <hours>4</hours>
             </task>
         </task>
         <task>
-            <title>AB sdas</title>
+            <title>JS Behavior</title>
             <resource>Derlidio</resource>
-            <percent>10</percent>
+            <percent>100</percent>
+            <hours>1</hours>
         </task>
     </task>
 
     <task>
-        <title>Relearn CSS</title>
+        <title>Showcase WBS Project</title>
         <resource>Derlidio</resource>
-        <percent>10</percent>
         <task>
-            <title>Fight with CSS</title>
+            <title>GitHub</title>
             <resource>Derlidio</resource>
-            <percent>0</percent>
             <task>
-                <title>A Sub CSS Task</title>
+                <title>Private Repository</title>
                 <resource>Derlidio</resource>
-                <percent>0</percent>
-                <task>
-                    <title>A Sub-Sub CSS Task</title>
-                    <resource>Derlidio</resource>
-                    <percent>20</percent>
-                </task>
-                <task>
-                    <title>A Sub-Sub CSS Task</title>
-                    <resource>Derlidio</resource>
-                    <percent>10</percent>
-                </task>
+                <percent>100</percent>
             </task>
             <task>
-                <title>Another Sub CSS Task</title>
+                <title>Public Repository</title>
                 <resource>Derlidio</resource>
                 <percent>0</percent>
             </task>
         </task>
         <task>
-            <title>Fight a little more with CSS</title>
+            <title>YouTube Video</title>
             <resource>Derlidio</resource>
-            <percent>0</percent>
+            <task>
+                <title>Roadmap Script</title>
+                <percent>0</percent>
+                <hours>4</hours>
+            </task>
+            <task>
+                <title>Shooting</title>
+                <percent>0</percent>
+                <hours>2</hours>
+            </task>
+            <task>
+                <title>Editing</title>
+                <percent>0</percent>
+                <hours>4</hours>
+            </task>
         </task>
+
     </task>
 
 </project>
