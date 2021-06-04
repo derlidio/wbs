@@ -17,10 +17,13 @@ function toggle_branch(ref)
 
     if (ramification.classList.contains("hidden"))
     {
+        ramification.classList.remove("squeezed");
         ramification.classList.remove("hidden");
+        
     }
     else
-    {
+    {        
         ramification.classList.add("hidden");
+        setTimeout( function(){ ramification.classList.add("squeezed"); }, 250);
     }
 };

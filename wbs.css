@@ -1,19 +1,18 @@
 body
 {
+    margin: 0;
+    padding: 0;
     font-family: Helvetica, arial, sans-serif;
 }
 
 .container
 {
-    padding: 5px;
-    overflow: scroll;
+    padding: 0.5em;
     width: max-content;
 }
 
 .branch
 {
-    margin: 0;
-    padding: 0;
     float: left;
 }
 
@@ -27,7 +26,6 @@ body
 {
     width: fit-content;
     margin: auto;
-    padding: 0;
     clear: both;
 }
 
@@ -36,7 +34,6 @@ body
     min-width: 10em;
     margin-left: 0.5em;
     margin-right: 0.5em;
-    padding: 0;
 }
 
 .line_left
@@ -81,7 +78,6 @@ body
 
 .index
 {
-    margin: 0;
     padding: 0.25em;
     font-size: 0.8em;
     text-align: center;
@@ -111,7 +107,6 @@ body
 
 .task_title
 {
-    margin: 0;
     padding: 0.25em;
     font-size: 0.8em;
     background-color: #F5F5FF;
@@ -121,7 +116,6 @@ body
 
 .task_status
 {
-    margin: 0;
     padding: 0.25em;
     border-left: 1px solid #C0C0C0;
     border-right: 1px solid #C0C0C0;
@@ -157,8 +151,6 @@ body
 .task_meter
 {
     position: relative;
-    margin: 0;
-    padding: 0;
     height: 1em;
     background-color: lightgray;
 }
@@ -176,8 +168,6 @@ body
     display: table-cell;
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
     font-size: 0.75em;
     color: black;    
     text-align: center;
@@ -196,10 +186,17 @@ body
 
 .ramification
 {
-    display: block;
+    overflow: hidden;
+    transition: transform 0.25s;
 }
 
 .hidden
 {
-    display: none;
+    transform: scaleX(0);
+    transition: transform 0.25s;
+}
+
+.squeezed
+{
+    width: 0;
 }

@@ -115,9 +115,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <!-- Let's start to process the branches -->
     <!-- =================================== -->
 
-    <div class="branch" id="branch:{$task_index}">
+    <span class="branch" id="branch:{$task_index}">
 
-      <div class="task" id="task:{$task_index}">
+      <span class="task" id="task:{$task_index}">
 
         <!-- =========================================== -->
         <!-- Draw the connectors above the task box/card -->
@@ -253,7 +253,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <div class="line_bottom"/>
         </xsl:if>
 
-      </div>
+      </span>
 
       <!-- ====================================================== -->
       <!-- Apply the template for this task ramification (if any) -->
@@ -263,7 +263,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <xsl:apply-templates select="./task"/>
       </div>
 
-    </div>
+    </span>
 
   </xsl:template>
 
