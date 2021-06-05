@@ -46,7 +46,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <div class="project_name" id="project_name">
           <h1><xsl:value-of select="project/name"/></h1>
         </div>
-        <div class="container">
+        <div class="container" id="container">
           <xsl:apply-templates select="project/task"/>
         </div>
       </body>
@@ -207,7 +207,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 <!-- ===================================================  -->
 
                 <xsl:if test="task">
-                  <span class="material-icons-outlined task_icon toggler" id="toggler:{$task_index}">account_tree</span>
+                  <span class="task_icon tooltip">
+                    <span class="material-icons-outlined task_icon toggler" id="toggler:{$task_index}">account_tree</span>
+                    <span class="tooltiptext">Toggle Branch</span>
+                  </span>
                 </xsl:if>
 
                 <!-- ============================================== -->
@@ -215,30 +218,65 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 <!-- ============================================== -->
 
                 <xsl:if test="(weight &gt; 1) and not(task)">
-                  <span class="task_weight">
-                    <xsl:value-of select="weight"/>
+                  <span class="tooltip task_weight">
+                    <span><xsl:value-of select="weight"/></span>
+                    <span class="tooltiptext">Task Weight</span>
                   </span>
                 </xsl:if>
+
+                <!-- ============================================================================ -->
+                <!-- Select the task/branch tooltip based on the status flag and percent-complete -->
+                <!-- ============================================================================ -->
+
+                <xsl:variable name="status_tooltip">
+                  <xsl:choose>
+                    <xsl:when test="status='canceled'">Task Canceled</xsl:when>
+                    <xsl:when test="($leaves != 0) and ($canceled = $leaves)">Branch Canceled</xsl:when>
+                    <xsl:when test="($leaves != 0) and ($leaves - $canceled = $done)">Branch Complete</xsl:when>
+                    <xsl:when test="($leaves != 0) and ($doing != 0) and ($doing != $paused)">Ongoing Branch</xsl:when>
+                    <xsl:when test="percent = 100">Task Complete</xsl:when>
+                    <xsl:when test="(percent &gt; 0) and (status='paused')">Task Paused</xsl:when>
+                    <xsl:when test="(percent &gt; 0) and ($leaves = 0)">Ongoing Task</xsl:when>
+                    <xsl:when test="($doing != 0) and ($doing = $paused)">Branch Paused</xsl:when>
+                    <xsl:when test="$doing != 0">Ongoing Branch</xsl:when>
+                    <xsl:otherwise>
+                      <xsl:choose>
+                        <xsl:when test="task">Pending Branch</xsl:when>
+                        <xsl:otherwise>Pending Task</xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
 
                 <!-- ========================================================================= -->
                 <!-- Select the task status icon based on the status flag and percent-complete -->
                 <!-- ========================================================================= -->
 
-                <span class="material-icons-outlined task_icon">
-                  <xsl:choose>
-                    <xsl:when test="status='canceled'">cancel</xsl:when> <!-- The task is canceled -->
-                    <xsl:when test="($leaves != 0) and ($canceled = $leaves)">cancel</xsl:when> <!-- All tasks on the branch have been canceled -->
-                    <xsl:when test="($leaves != 0) and ($leaves - $canceled = $done)">check_circle</xsl:when> <!-- All tasks on the branch are completed -->
-                    <xsl:when test="($leaves !=0 ) and ($doing = $paused)">pause_circle</xsl:when> <!-- All ongoing tasks have benn paused -->
-                    <xsl:when test="($leaves != 0) and ($doing != 0)">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
-                    <xsl:when test="percent = 100">check_circle</xsl:when> <!-- This is a completed leaf task -->
-                    <xsl:when test="percent &gt; 0 and status='paused'">pause_circle</xsl:when> <!-- This is a paused leaf task -->
-                    <xsl:when test="percent &gt; 0 and ($leaves = 0)">play_circle</xsl:when> <!-- This is an ongoing leaf task -->
-                    <xsl:when test="$paused != 0 and $doing = $paused">pause_circle</xsl:when> <!-- All tasks on the branch have been paused -->
-                    <xsl:when test="$doing != 0">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
-                    <xsl:otherwise>pending</xsl:otherwise> <!-- All tasks on the branch (or this task) are pending -->
-                  </xsl:choose>
+                <span class="task_icon tooltip">
+                  <span class="material-icons-outlined task_icon task_icon" alt="{$status_tooltip}">
+                    <xsl:choose>
+                      <xsl:when test="status='canceled'">cancel</xsl:when> <!-- The task is canceled -->
+                      <xsl:when test="($leaves != 0) and ($canceled = $leaves)">cancel</xsl:when> <!-- All tasks on the branch have been canceled -->
+                      <xsl:when test="($leaves != 0) and ($leaves - $canceled = $done)">check_circle</xsl:when> <!-- All tasks on the branch are completed -->
+                      <xsl:when test="($leaves != 0) and ($doing != 0) and ($doing != $paused)">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
+                      <xsl:when test="percent = 100">check_circle</xsl:when> <!-- This is a completed leaf task -->
+                      <xsl:when test="(percent &gt; 0) and (status='paused')">pause_circle</xsl:when> <!-- This is a paused leaf task -->
+                      <xsl:when test="(percent &gt; 0) and ($leaves = 0)">play_circle</xsl:when> <!-- This is an ongoing leaf task -->
+                      <xsl:when test="($doing != 0) and ($doing = $paused)">pause_circle</xsl:when> <!-- All tasks on the branch have been paused -->
+                      <xsl:when test="$doing != 0">play_circle</xsl:when> <!-- There are ongoing tasks on the branch -->
+                      <xsl:otherwise>pending</xsl:otherwise> <!-- All tasks on the branch (or this task) are pending -->
+                    </xsl:choose>
+                  </span>
+                  <span class="tooltiptext"><xsl:value-of select="$status_tooltip"/></span>
                 </span>
+
+                <!-- ==================================================== -->
+                <!-- If a custom material-icon has been provided, show it -->
+                <!-- ==================================================== -->
+
+                <xsl:if test="icon">
+                  <span class="material-icons-outlined task_icon"><xsl:value-of select="icon"/></span>
+                </xsl:if>
 
               </div>
 

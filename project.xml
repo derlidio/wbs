@@ -9,17 +9,21 @@
         <title>Relearn XSL</title>
         <task>
             <title>Search Material</title>
+            <icon>search</icon>
             <percent>100</percent>
             <hours>1</hours>
         </task>
         <task>
             <title>Read Material</title>
+            <icon>auto_stories</icon>
             <percent>100</percent>
             <hours>1</hours>
         </task>
         <task>
             <title>Test Scripts</title>
+            <icon>description</icon>
             <percent>100</percent>
+            <weight>2</weight>
             <hours>4</hours>
         </task>
     </task>
@@ -51,6 +55,14 @@
             <title>JS Behavior</title>
             <percent>100</percent>
             <hours>1</hours>
+            <task>
+                <title>Use JQuery</title>
+                <status>canceled</status>
+            </task>
+            <task>
+                <title>Use Plain JS</title>
+                <percent>100</percent>
+            </task>
         </task>
     </task>
 
@@ -73,14 +85,25 @@
                 <title>Roadmap Script</title>
                 <percent>0</percent>
                 <hours>4</hours>
+                <task>
+                    <title>Mental Map</title>
+                    <percent>10</percent>
+                    <status>paused</status>
+                </task>
+                <task>
+                    <title>Writing</title>
+                    <percent>0</percent>
+                </task>
             </task>
             <task>
                 <title>Shooting</title>
+                <icon>videocam</icon>
                 <percent>0</percent>
                 <hours>2</hours>
             </task>
             <task>
                 <title>Editing</title>
+                <icon>video_settings</icon>
                 <percent>0</percent>
                 <hours>4</hours>
             </task>

@@ -8,6 +8,7 @@ body
 .project_name
 {   
     position: relative;
+    display: inline-block;
     margin-top: 0.5em;
     margin-left: 0.5em;
 }
@@ -41,6 +42,7 @@ body
     min-width: 10em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    overflow: visible;
 }
 
 .line_left
@@ -147,14 +149,16 @@ body
 
 .task_icon
 {
+    cursor: default;
     display: table-cell;
     vertical-align: middle;
+    color: #404040;
 }
 
 .task_weight
 {
     display: table-cell;
-    width: 18px;
+    min-width: 24px;
     height: 18px;
     border: 2px solid #C0C0C0;
     border-radius: 5px;
@@ -199,7 +203,7 @@ body
 
 .toggler
 {
-    color: #808080;
+    color: #8080FF;
 }
 
 .toggler:hover
@@ -224,3 +228,41 @@ body
 {
     width: 0;
 }
+
+.tooltip 
+{
+    position: relative;
+}
+  
+.tooltip .tooltiptext 
+{
+    position: absolute;
+    left: -10px;
+    visibility: hidden;
+    width: max-content;
+    background-color: #505050;
+    color: #FFFFFF;
+    border-radius: 6px;
+    padding: 0.25em 0.5em;
+    z-index: 1;
+    bottom: 125%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip .tooltiptext::after 
+  {
+    left: 15px;
+    content: "";
+    position: absolute;
+    top: 100%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext 
+  {
+    visibility: visible;
+    opacity: 1;
+  }

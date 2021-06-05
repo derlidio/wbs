@@ -6,7 +6,6 @@ function add_behavior()
 
     for (var i = 0; i < togglers.length; i++)
     {
-        console.log("added click event: " + i);
         togglers[i].addEventListener('click', function() { toggle_branch(this); } )
     }
 };
@@ -14,9 +13,14 @@ function add_behavior()
 function scroll_title()
 {
     var title = document.getElementById("project_name");
+    var container = document.getElementById("container");
+
     var left = window.pageXOffset || document.documentElement.scrollLeft;
-    title.style.left = left;
-    console.log(left);
+    var limit = container.style.offsetWidth - window.innerWidth;
+
+    if (limit < 0) limit = 0;
+
+    title.style.left = left > limit? limit : left;
 }
 
 function toggle_branch(ref)
@@ -28,8 +32,7 @@ function toggle_branch(ref)
     if (ramification.classList.contains("hidden"))
     {
         ramification.classList.remove("squeezed");
-        ramification.classList.remove("hidden");
-        
+        ramification.classList.remove("hidden");        
     }
     else
     {        
