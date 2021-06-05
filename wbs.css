@@ -114,6 +114,16 @@ body
     color: white;
 }
 
+.leaf_mark
+{
+    float:left;
+    content: "";
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+    background-color: white;
+}
+
 .title
 {
     padding: 0.25em;
@@ -241,7 +251,7 @@ body
     visibility: hidden;
     width: max-content;
     background-color: #505050;
-    color: #FFFFFF;
+    color: white;
     border-radius: 6px;
     padding: 0.25em 0.5em;
     z-index: 1;

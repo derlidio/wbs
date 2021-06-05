@@ -3,7 +3,7 @@
 <?xml-stylesheet type="text/xsl" href="wbs.xsl"?>
 
 <project>
-    <name>WBS Tree</name>
+    <name>WBS Sample Project</name>
     <resource>Derlidio</resource>
     <task>
         <title>Relearn XSL</title>
@@ -57,6 +57,7 @@
             <hours>1</hours>
             <task>
                 <title>Use JQuery</title>
+                <percent>10</percent>
                 <status>canceled</status>
             </task>
             <task>

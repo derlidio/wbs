@@ -180,7 +180,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               </xsl:attribute>
 
               <xsl:value-of select="$task_index"/>
-
+              
+              <xsl:if test="not(task)"><div class="leaf_mark"/></xsl:if>
+              
             </div>
 
             <!-- ================ -->
