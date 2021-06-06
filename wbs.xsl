@@ -44,7 +44,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       </head>
       <body>
         <div class="project_name" id="project_name">
-          <h1><xsl:value-of select="project/name"/></h1>
+          <span><xsl:value-of select="project/name"/></span>
         </div>
         <div class="container" id="container">
           <xsl:apply-templates select="project/task"/>
@@ -143,15 +143,17 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <!-- Draw the connectors above the task box/card -->
         <!-- =========================================== -->
 
-        <xsl:choose>
-          <xsl:when test="position() = 1"><div class="line_left"/></xsl:when>
-          <xsl:when test="position() = last()"><div class="line_right"/></xsl:when>
-          <xsl:otherwise>
-            <div class="line_center">
-              <div class="line_top"/>
-            </div>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:if test="count(../task) &gt; 1">
+          <xsl:choose>
+            <xsl:when test="position() = 1"><div class="line_left"/></xsl:when>
+            <xsl:when test="position() = last()"><div class="line_right"/></xsl:when>
+            <xsl:otherwise>
+              <div class="line_center">
+                <div class="line_top"/>
+              </div>
+              </xsl:otherwise>
+          </xsl:choose>
+        </xsl:if>
 
         <!-- ====================== -->
         <!-- The task info box/card -->

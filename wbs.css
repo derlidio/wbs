@@ -9,12 +9,19 @@ body
 {   
     position: relative;
     display: inline-block;
+    font-size: 2em;
+    font-weight: bold;
     margin-top: 0.5em;
     margin-left: 0.5em;
+    border: 1px solid #C0C0C0;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    box-shadow: 5px 5px 10px #C0C0C0;
 }
 
 .container
 {
+    margin-top: 1em;
     padding: 0.5em;
     width: max-content;
 }
